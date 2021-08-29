@@ -21,10 +21,30 @@ function createHTMLString(item) {
     `;
 }
 
+// Handle button click
+function onButtonClick(event, items) {
+    const dataset = event.target.dataset;
+    const key = dataset.key;
+    const value = dataset.value;
+
+    if (key == null || value == null) {
+        return;
+    }
+
+    displayItems(items.filter(item => item[key] === value));  // container가 계속 업데이드 되어야 하는 단점 존재
+}
+
+// Set EventListenter
+function setEventListeners(items) {
+    const logo = document.querySelector(".logo");
+    const buttons = document.querySelector(".btns");
+    logo.addEventListener("click", () => displayItems(items));
+    buttons.addEventListener("click", event => onButtonClick(event, items));
+}
+
 // main
 loadItems()
     .then(items => {
-        console.log(items);
         displayItems(items);
         setEventListeners(items);
     })
